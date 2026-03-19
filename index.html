@@ -1824,14 +1824,109 @@
       .section-sub { font-size: 14px; }
 
       /* ── Grid layouts ── */
-      .challenges-grid { grid-template-columns: 1fr; gap: 12px; }
-      .approach-grid   { grid-template-columns: 1fr; gap: 14px; }
-      .packages-grid   { grid-template-columns: 1fr; gap: 14px; }
       .why-grid        { grid-template-columns: 1fr; gap: 0; }
       .why__left       { margin-bottom: 32px; }
       .credibility-grid { grid-template-columns: 1fr; gap: 32px; }
-      .process-steps   { grid-template-columns: 1fr 1fr; gap: 20px; }
       .process-steps::before { display: none; }
+
+      /* ── Process carousel scroll hint ── */
+      .process-scroll-hint { display: none; }
+
+      /* ── Section headers aligned with carousel first card ── */
+      .packages .section-header,
+      .challenges .section-header { padding-left: 20px; }
+
+      /* ── Horizontal snap carousels ── */
+      .mob-carousel-wrap {
+        position: relative;
+        overflow: hidden;
+      }
+      .mob-carousel-wrap::after {
+        content: '';
+        position: absolute;
+        top: 0; right: 0; bottom: 20px;
+        width: 56px;
+        background: linear-gradient(to right, transparent, var(--white));
+        pointer-events: none;
+        z-index: 2;
+      }
+      .approach-grid,
+      .packages-grid,
+      .challenges-grid,
+      .process-steps {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 20px;
+        gap: 14px;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .approach-grid::-webkit-scrollbar,
+      .packages-grid::-webkit-scrollbar,
+      .challenges-grid::-webkit-scrollbar,
+      .process-steps::-webkit-scrollbar { display: none; }
+      /* Left padding via first-child margin — reliable across all browsers */
+      .approach-card:first-child,
+      .package-card:first-child,
+      .challenge-card:first-child,
+      .process-step:first-child { margin-left: 20px; }
+      /* Right breathing room after last card */
+      .approach-card:last-child,
+      .package-card:last-child,
+      .challenge-card:last-child,
+      .process-step:last-child { margin-right: 20px; }
+      .approach-card,
+      .package-card,
+      .challenge-card,
+      .process-step {
+        flex: 0 0 76vw;
+        scroll-snap-align: start;
+        max-width: 300px;
+      }
+      /* Disable reveal stagger inside carousels — items start hidden off-screen */
+      .approach-grid .approach-card,
+      .packages-grid .package-card,
+      .challenges-grid .challenge-card,
+      .process-steps .process-step {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      /* Fix process step dot number badge being clipped by overflow:hidden on wrapper */
+      .process-steps { padding-top: 10px; }
+
+      /* ── Process scroll hint ── */
+      .process-scroll-hint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: -4px;
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--gray-mid);
+        animation: hint-pulse 1.8s ease-in-out infinite;
+        transition: opacity 300ms ease;
+      }
+      .process-scroll-hint.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .process-scroll-hint svg {
+        animation: hint-slide 1.8s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes hint-pulse {
+        0%, 100% { opacity: 0.45; }
+        50% { opacity: 1; }
+      }
+      @keyframes hint-slide {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(4px); }
+      }
 
       /* ── Card padding ── */
       .approach-card { padding: 28px 24px; border-radius: 24px; }
@@ -1922,9 +2017,6 @@
       .hero__actions { flex-direction: column; width: 100%; }
       .hero__actions .btn { width: 100%; justify-content: center; }
 
-      .process-steps { grid-template-columns: 1fr; gap: 20px; }
-      .packages-grid { grid-template-columns: 1fr; }
-      .challenges-grid { grid-template-columns: 1fr; }
 
       .approach-card { padding: 22px 18px; }
       .challenge-card { padding: 20px 18px; }
@@ -2063,6 +2155,7 @@
         <span class="label-tag">Contexto</span>
         <h2 class="section-title">O que as campanhas modernas exigem</h2>
       </div>
+      <div class="mob-carousel-wrap">
       <div class="challenges-grid">
         <div class="challenge-card reveal reveal-delay-1">
           <div class="challenge-card__icon">
@@ -2093,6 +2186,7 @@
           <p class="challenge-card__text">Soluções genéricas produzem conteúdo padronizado que não reflete a voz do candidato. Em contexto eleitoral, autenticidade na comunicação é inegociável.</p>
         </div>
       </div>
+      </div><!-- /.mob-carousel-wrap -->
     </div>
   </section>
 
@@ -2106,6 +2200,7 @@
         <h2 class="section-title">Nossa metodologia</h2>
         <p class="section-sub">Seis pilares para execução eficaz em cada fase da campanha.</p>
       </div>
+      <div class="mob-carousel-wrap">
       <div class="approach-grid">
         <div class="approach-card reveal reveal-delay-1">
           <span class="approach-card__num">01</span>
@@ -2156,6 +2251,7 @@
           <p class="approach-card__text">Entendemos campanhas eleitorais integradas ao design. Narrativa estratégica, posicionamento, tom de voz — tudo alinhado com o candidato.</p>
         </div>
       </div>
+      </div><!-- /.mob-carousel-wrap -->
     </div>
   </section>
 
@@ -2169,6 +2265,7 @@
         <h2 class="section-title">Da estratégia ao lançamento</h2>
         <p class="section-sub">Cinco etapas estruturadas para garantir clareza, agilidade e resultado.</p>
       </div>
+      <div class="mob-carousel-wrap">
       <div class="process-steps">
         <div class="process-step reveal reveal-delay-1">
           <div class="process-step__dot">
@@ -2211,6 +2308,12 @@
           <p class="process-step__text">Alinhamento final, treinamento da equipe e ativação da campanha.</p>
         </div>
       </div><!-- /.process-steps -->
+      </div><!-- /.mob-carousel-wrap -->
+
+      <div class="process-scroll-hint" id="process-scroll-hint" aria-hidden="true">
+        <span>deslize para ver mais</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
 
       <!-- ─── Photo carousel — filmstrip marquee ───────────────────── -->
       <div class="process-carousel-wrap reveal">
@@ -2484,6 +2587,7 @@
         <h2 class="section-title">Escolha seu pacote</h2>
         <p class="section-sub">Projetos estruturados para diferentes fases e portes de campanha. Serviços avulsos disponíveis sob consulta.</p>
       </div>
+      <div class="mob-carousel-wrap">
       <div class="packages-grid">
 
         <div class="package-card">
@@ -2564,6 +2668,7 @@
         </div>
 
       </div>
+      </div><!-- /.mob-carousel-wrap -->
     </div>
   </section>
   </section>
@@ -2801,8 +2906,9 @@
       // ── Mouse / touch ────────────────────────────────────────────────
       let mx = -9999, my = -9999;
       let prevMx = -9999, prevMy = -9999;
-      let dvx = 0, dvy = 0;          // mouse velocity delta this frame
-      let dragging = false;
+      let dvx = 0, dvy = 0;
+      let dragging = false;   // desktop: click-drag to pull
+      let touching = false;   // mobile: touch to push (repulsion)
 
       function updatePos(cx, cy) {
         prevMx = mx; prevMy = my;
@@ -2813,21 +2919,35 @@
         }
       }
 
+      function resetPointer() {
+        mx = -9999; my = -9999;
+        dragging = false; touching = false;
+        dvx = 0; dvy = 0;
+      }
+
+      // Desktop mouse
       hero.addEventListener('mousemove', e => {
         const r = hero.getBoundingClientRect();
         updatePos(e.clientX - r.left, e.clientY - r.top);
       }, { passive: true });
       hero.addEventListener('mousedown', e => { if (e.button === 0) { dragging = true; e.preventDefault(); } });
       hero.addEventListener('mouseup',   () => { dragging = false; dvx = 0; dvy = 0; });
-      hero.addEventListener('mouseleave', () => { mx = -9999; my = -9999; dragging = false; dvx = 0; dvy = 0; }, { passive: true });
+      hero.addEventListener('mouseleave', resetPointer, { passive: true });
 
+      // Mobile touch — all passive (never blocks scroll)
+      hero.addEventListener('touchstart', e => {
+        const r = hero.getBoundingClientRect();
+        const t = e.touches[0];
+        touching = true;
+        updatePos(t.clientX - r.left, t.clientY - r.top);
+      }, { passive: true });
       hero.addEventListener('touchmove', e => {
         const r = hero.getBoundingClientRect();
         const t = e.touches[0];
-        dragging = true;
         updatePos(t.clientX - r.left, t.clientY - r.top);
       }, { passive: true });
-      hero.addEventListener('touchend', () => { mx = -9999; my = -9999; dragging = false; dvx = 0; dvy = 0; }, { passive: true });
+      hero.addEventListener('touchend',    resetPointer, { passive: true });
+      hero.addEventListener('touchcancel', resetPointer, { passive: true });
 
       // ── Film-grain noise canvas ───────────────────────────────────────
       const NS = 512;
@@ -2856,14 +2976,19 @@
         }
         update() {
           this.vy += 0.34;                          // gravity
+          const interactR = W <= 768 ? 160 : 230;
           const dx = this.x - mx, dy = this.y - my;
           const d2 = dx*dx + dy*dy;
-          if (d2 < 230*230 && d2 > 1) {
+          if (d2 < interactR*interactR && d2 > 1) {
             const d = Math.sqrt(d2);
             if (dragging) {
-              // Pull ball toward cursor while button is held
-              const f = ((230 - d) / 230) * 1.8;
+              // Desktop: pull ball toward cursor
+              const f = ((interactR - d) / interactR) * 1.8;
               this.vx -= dx/d * f; this.vy -= dy/d * f;
+            } else if (touching) {
+              // Mobile: push ball away from finger (repulsion)
+              const f = ((interactR - d) / interactR) * 2.4;
+              this.vx += dx/d * f; this.vy += dy/d * f;
             }
           }
           this.vx *= 0.975; this.vy *= 0.975;       // friction
@@ -3028,6 +3153,19 @@
 
     // ─── SERVICES — sidebar tab switcher ─────────────────────────────
     (function () {
+      // ── Process carousel scroll hint ─────────────────────────────
+      (function () {
+        const hint = document.getElementById('process-scroll-hint');
+        const track = document.querySelector('.process-steps');
+        if (!hint || !track) return;
+        track.addEventListener('scroll', function onScroll() {
+          if (track.scrollLeft > 20) {
+            hint.classList.add('hidden');
+            track.removeEventListener('scroll', onScroll);
+          }
+        }, { passive: true });
+      })();
+
       const widget = document.querySelector('.svc-widget');
       if (!widget) return;
       const navItems = Array.from(widget.querySelectorAll('.svc-nav-item'));
@@ -3169,7 +3307,9 @@
         let W = 0, H = 0, balls = [];
 
         // Mouse / touch state
-        let mx = -9999, my = -9999, dragging = false;
+        let mx = -9999, my = -9999, dragging = false, touching = false;
+
+        function resetPtr() { mx = -9999; my = -9999; dragging = false; touching = false; }
 
         section.addEventListener('mousemove', e => {
           const rect = section.getBoundingClientRect();
@@ -3183,16 +3323,24 @@
           }
         });
         section.addEventListener('mouseup',    () => { dragging = false; });
-        section.addEventListener('mouseleave', () => { mx = -9999; my = -9999; dragging = false; }, { passive: true });
+        section.addEventListener('mouseleave', resetPtr, { passive: true });
 
-        section.addEventListener('touchmove', e => {
+        // Mobile touch — all passive
+        section.addEventListener('touchstart', e => {
           const rect = section.getBoundingClientRect();
           const t = e.touches[0];
-          dragging = true;
+          touching = true;
           mx = t.clientX - rect.left;
           my = t.clientY - rect.top;
         }, { passive: true });
-        section.addEventListener('touchend', () => { mx = -9999; my = -9999; dragging = false; }, { passive: true });
+        section.addEventListener('touchmove', e => {
+          const rect = section.getBoundingClientRect();
+          const t = e.touches[0];
+          mx = t.clientX - rect.left;
+          my = t.clientY - rect.top;
+        }, { passive: true });
+        section.addEventListener('touchend',    resetPtr, { passive: true });
+        section.addEventListener('touchcancel', resetPtr, { passive: true });
 
         function init() {
           const scale = W <= 768 ? 0.52 : 1;
@@ -3222,22 +3370,27 @@
           frame++;
           if (frame % 2 === 0) refreshNoise();
 
+          const interactR = W <= 768 ? 150 : 220;
           balls.forEach(b => {
-            if (dragging) {
-              // Pull toward cursor
-              const dx = b.x - mx, dy = b.y - my;
-              const d2 = dx*dx + dy*dy;
-              if (d2 < 220*220 && d2 > 1) {
-                const d = Math.sqrt(d2);
-                const f = ((220 - d) / 220) * 1.8;
-                b.vx -= dx/d * f; b.vy -= dy/d * f;
-              }
+            const dx = b.x - mx, dy = b.y - my;
+            const d2 = dx*dx + dy*dy;
+            if (dragging && d2 < interactR*interactR && d2 > 1) {
+              // Desktop: pull toward cursor
+              const d = Math.sqrt(d2);
+              const f = ((interactR - d) / interactR) * 1.8;
+              b.vx -= dx/d * f; b.vy -= dy/d * f;
+              b.vx *= 0.975; b.vy *= 0.975;
+            } else if (touching && d2 < interactR*interactR && d2 > 1) {
+              // Mobile: push away from finger
+              const d = Math.sqrt(d2);
+              const f = ((interactR - d) / interactR) * 2.4;
+              b.vx += dx/d * f; b.vy += dy/d * f;
               b.vx *= 0.975; b.vy *= 0.975;
             } else {
               // Spring back to home position
               b.vx += (W * b.hxf - b.x) * 0.04;
               b.vy += (H * b.hyf - b.y) * 0.04;
-              b.vx *= 0.82; b.vy *= 0.82;  // strong damping for crisp return
+              b.vx *= 0.82; b.vy *= 0.82;
             }
             b.x += b.vx; b.y += b.vy;
           });
